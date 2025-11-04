@@ -112,10 +112,16 @@
     <h1>Está temblando<br>en Filipinas</h1>
     <h5>Diseño y visualización de información | Universidad de Chile</h5>
 
-    <p>El <abbr title="United States Geological Survey">USGS</abbr> (Servicio Geológico de Estados Unidos) monitorea la actividad sísmica mundial mediante el 
-      <a href="https://earthquake.usgs.gov/earthquakes/feed/v1.0/geojson.php" target="_blank">Earthquake Hazards Program</a>.
-      En esta página se muestran los sismos registrados en Filipinas durante el último mes con magnitud igual o superior a <strong>4.0</strong>.
-    </p>
+   <p>
+                El <abbr title="United States Geological Survey">USGS</abbr> (Servicio Geológico de Estados Unidos) es responsable del
+                <a href="https://www.usgs.gov/programs/earthquake-hazards" target="_blank">Earthquake Hazards Program</a>, que monitorea e informa sobre movimientos telúricos, además de evaluar sus impactos y riesgos. Los resultados de su
+                monitoreo son compartidos mediante <a href="https://earthquake.usgs.gov/earthquakes/feed/" target="_blank">Real-time Notifications</a>, que pueden consultarse en distintos formatos.
+            </p>
+            <p>
+                Entre los compartidos está el GeoJSON Summary Format, que es actualizado a cada minuto y tiene una estructura (Output) que se explica en su página oficial. Aprovechando la
+                <a href="https://earthquake.usgs.gov/earthquakes/feed/v1.0/geojson.php" target="_blank">explicación de la estructura (Output)</a>, y lo ya preparado en este código fuente, que entra al <code>features:[]</code> para obtener
+                los datos, podemos visualizar lo que sigue:
+            </p>
 
     <h2>En Filipinas</h2>
     <table>
