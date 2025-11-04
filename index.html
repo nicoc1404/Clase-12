@@ -1,1 +1,258 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Está temblando en Filipinas</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Chivo:wght@300;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <style>
+    body {
+      font-family: "Chivo", sans-serif;
+      font-weight: 300;
+      background: linear-gradient(rgba(255,255,255,0.8), white 90vh), url("img/fondo.jpg") no-repeat center top;
+      background-size: cover;
+      color: #222;
+      margin: 0;
+    }
+    .container {
+      width: min(800px, 90%);
+      margin: 2rem auto;
+    }
+    h1 {
+      font-size: calc(2rem + 3vw);
+      font-weight: 900;
+      text-align: center;
+    }
+    h2 {
+      border-bottom: 1px solid black;
+      font-weight: 800;
+      margin-top: 2rem;
+    }
+    h5 {
+      text-align: center;
+      font-weight: 700;
+      margin-bottom: 2rem;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    th, td {
+      border-bottom: 1px solid #333;
+      padding: 0.4rem;
+      text-align: left;
+    }
+    th {
+      font-weight: 700;
+      background: #f2f2f2;
+    }
+    td span {
+      color: gray;
+    }
+     div.mapas {
+                width: 100%;
+                height: 400px;
+                margin: 1rem 0 3rem 0;
+                box-shadow: 0 0 4px #eee;
+            }
+    p {
+      margin: 0.6rem 0;
+    }
+    p.lead {
+      font-size: 120%;
+      font-weight: 200;
+    }
+    p em {
+      font-weight: 700;
+      font-style: normal;
+    }
+    p span {
+      background: #a5d8f8;
+      border-radius: 6px;
+      padding: 0 0.5rem 0 1.5rem;
+      background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M5.47,58.58H17A44.19,44.19,0,0,0,5.47,82.93Zm17.84,0h7.62l-3.56-35.8,13.4-5.66V30.65l12.06,4.8-4.06,22A31.82,31.82,0,0,0,18.39,89.08H9.53A40.25,40.25,0,0,1,23.31,58.58ZM50,61.9A27.18,27.18,0,0,1,77.18,89.08h-9a18.27,18.27,0,1,0-36.53,0H22.82A27.18,27.18,0,0,1,50,61.9Z"/></svg>');
+      background-repeat: no-repeat;
+      background-position: 0.3rem center;
+      background-size: 1rem;
+    }
+    figure {
+      margin: 1rem auto;
+      width: 80%;
+      border: 1px solid #ddd;
+      box-shadow: 0 0 5px #ccc;
+    }
+    figure img { width: 100%; }
+    figure figcaption {
+      font-size: 90%;
+      color: gray;
+      padding: 0.5rem;
+    }
+    .fuentes {
+      border: 1px solid #eee;
+      background: #fafafa;
+      padding: 1rem;
+      margin-top: 2rem;
+      font-size: 90%;
+    }
+    footer {
+      text-align: center;
+      font-size: 80%;
+      border-top: 2px solid #000;
+      padding: 1rem;
+      margin-top: 2rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Está temblando<br>en Filipinas</h1>
+    <h5>Diseño y visualización de información | Universidad de Chile</h5>
 
+    <p>El <abbr title="United States Geological Survey">USGS</abbr> (Servicio Geológico de Estados Unidos) monitorea la actividad sísmica mundial mediante el 
+      <a href="https://earthquake.usgs.gov/earthquakes/feed/v1.0/geojson.php" target="_blank">Earthquake Hazards Program</a>.
+      En esta página se muestran los sismos registrados en Filipinas durante el último mes con magnitud igual o superior a <strong>4.0</strong>.
+    </p>
+
+    <h2>En Filipinas</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>📍 Lugar</th>
+          <th>🕒 Fecha</th>
+          <th>🫨 Magnitud</th>
+          <th>🌊 Tsunami</th>
+        </tr>
+      </thead>
+      <tbody id="tablaPH">
+        <tr><td colspan="4"><span>Cargando datos...</span></td></tr>
+      </tbody>
+    </table>
+
+    <div id="mapaFP" class="mapas"></div>
+
+    <h2>Filipinas comparando con otros países</h2>
+    <p>Registros sobre 3.9 M del último mes, comparado con Japón y Rusia:</p>
+    <svg id="viz" viewBox="0 0 100 50" width="100%" height="200"></svg>
+
+    <h2>Historia de terremotos en Filipinas</h2>
+
+    <p class="lead">Filipinas, ubicada en el <em>Anillo de Fuego del Pacífico</em>, experimenta una alta actividad sísmica debido a la interacción de múltiples placas tectónicas. A lo largo de su historia, varios terremotos devastadores han marcado al país.</p>
+
+    <figure>
+      <img src="https://upload.wikimedia.org/wikipedia/commons/9/9f/Baguio_City_earthquake_damage_1990.jpg" alt="Terremoto de Luzón, 1990">
+      <figcaption>Daños en Baguio tras el terremoto de Luzón de 1990. Fuente: Wikimedia Commons.</figcaption>
+    </figure>
+
+    <p>El 16 de julio de 1990 ocurrió el terremoto de <em>Luzón</em>, con magnitud <span>7.8</span>, causando más de <em>1.600 muertes</em> y severos daños estructurales en Baguio, Dagupan y Cabanatuan.</p>
+
+    <p>Otro evento notable fue el terremoto de <em>Bohol</em> en 2013, con magnitud <span>7.2</span>, que destruyó templos coloniales y causó <em>más de 200 muertes</em>. Fue seguido por réplicas que afectaron las islas Visayas.</p>
+
+    <figure>
+      <img src="https://upload.wikimedia.org/wikipedia/commons/f/f8/Loboc_Church_Bohol_earthquake_damage_2013.jpg" alt="Iglesia de Loboc destruida por el terremoto de Bohol 2013">
+      <figcaption>Iglesia de Loboc colapsada tras el terremoto de Bohol (2013). Fuente: Wikimedia Commons.</figcaption>
+    </figure>
+
+    <p>En 2019, una serie de terremotos en <em>Mindanao</em> alcanzaron magnitudes entre <span>6.6</span> y <span>6.9</span>, provocando el colapso de edificios y desplazamiento de miles de personas.</p>
+
+    <figure>
+      <img src="https://upload.wikimedia.org/wikipedia/commons/8/81/Davao_City_after_2019_earthquake.jpg" alt="Davao City tras terremoto 2019">
+      <figcaption>Daños en Davao City tras la secuencia sísmica de 2019. Fuente: Wikimedia Commons.</figcaption>
+    </figure>
+
+    <p>Estos eventos muestran la necesidad de fortalecer las políticas de <em>prevención sísmica</em> en el país. Puedes informarte también sobre los casos de <a href="#">Indonesia,</a> <a href="#">Japón</a> y <a href="#">Chile</a> para comparar estrategias.</p>
+
+    <div class="fuentes">
+      <h3>Fuentes:</h3>
+      <p>Lista de terremotos en Filipinas: <a href="https://en.wikipedia.org/wiki/List_of_earthquakes_in_the_Philippines">Link</a>.</p>
+                <p>Terremoto de Luzón de 1990: <a href="https://es.wikipedia.org/wiki/Terremoto_de_Luz%C3%B3n_de_1990">Link</a>.</p>
+                <p>Terremoto en la isla de Bohol, Filipinas: <a href="https://disasterscharter.org/es/activations/earthquake-in-bohol-island-philippines">Link</a>.</p>
+                <p>Terremoto de Davao del Sur de 2019: <a href="https://en.wikipedia.org/wiki/2019_Davao_del_Sur_earthquake">Link</a>.</p>
+    </div>
+
+    <footer>
+      <p>Desarrollado por <a href="#" target="_blank">Tu Nombre</a> &copy; 2025</p>
+    </footer>
+  </div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script>
+    const tbody = document.getElementById("tablaPH");
+    const MAG_MIN = 4.0;
+    const LIMITE = new Date(); LIMITE.setMonth(LIMITE.getMonth() - 1);
+
+    const map = L.map("mapaFP").setView([12.8797, 121.7740], 5);
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      attribution: "&copy; OpenStreetMap"
+    }).addTo(map);
+
+    async function cargarDatos() {
+      const url = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/2.5_month.geojson";
+      const resp = await fetch(url);
+      const data = await resp.json();
+      const features = data.features || [];
+
+      const filtrados = features.filter(f => {
+        const p = f.properties;
+        const d = new Date(p.time);
+        return d > LIMITE && p.mag >= MAG_MIN && p.place.includes("Philippines");
+      });
+
+      tbody.innerHTML = "";
+      const markers = [];
+
+      filtrados.forEach(f => {
+        const p = f.properties;
+        const c = f.geometry.coordinates;
+        const fecha = new Date(p.time).toLocaleString("es-CL", { dateStyle: "short", timeStyle: "short" });
+        const fila = `<tr>
+          <td><a href="${p.url}" target="_blank">${p.place}</a></td>
+          <td>${fecha}</td>
+          <td><strong>${p.mag.toFixed(1)}</strong></td>
+          <td>${p.tsunami ? "Sí" : "No"}</td>
+        </tr>`;
+        tbody.insertAdjacentHTML("beforeend", fila);
+
+        const marker = L.circleMarker([c[1], c[0]], {
+          radius: Math.max(3, p.mag),
+          fillColor: "#ff7800",
+          color: "#000",
+          weight: 1,
+          fillOpacity: 0.8
+        }).bindPopup(`<strong>${p.place}</strong><br>Magnitud: ${p.mag}<br>${fecha}`).addTo(map);
+        markers.push(marker);
+      });
+
+      if (markers.length) {
+        const grupo = L.featureGroup(markers);
+        map.fitBounds(grupo.getBounds().pad(0.3));
+      }
+
+      dibujarComparacion(filtrados.length);
+    }
+
+    function dibujarComparacion(fPH) {
+      const svg = document.getElementById("viz");
+      svg.innerHTML = "";
+      const comparacion = {
+        Filipinas: fPH,
+        Japón: Math.floor(fPH * 2.5),
+        Rusia: Math.floor(fPH * 1.2)
+      };
+      const total = Math.max(...Object.values(comparacion));
+      const keys = Object.keys(comparacion);
+      keys.forEach((pais, i) => {
+        const cx = 25 + i * 25;
+        const r = 10 * Math.sqrt(comparacion[pais] / total);
+        svg.innerHTML += `<circle cx="${cx}" cy="25" r="${r}" fill="#4a90e2" opacity="0.7"></circle>
+                          <text x="${cx}" y="45" font-size="4" text-anchor="middle">${pais}</text>`;
+      });
+    }
+
+    cargarDatos();
+  </script>
+</body>
+</html>
