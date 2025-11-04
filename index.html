@@ -218,13 +218,13 @@
           <td><a href="${p.url}" target="_blank">${p.place}</a></td>
           <td>${fecha}</td>
           <td><strong>${p.mag.toFixed(1)}</strong></td>
-          <td>${p.tsunami ? "Sí" : "No"}</td>
+          <td>${p.tsunami ? "Alerta" : "Sin Alerta"}</td>
         </tr>`;
         tbody.insertAdjacentHTML("beforeend", fila);
 
         const marker = L.circleMarker([c[1], c[0]], {
           radius: Math.max(3, p.mag),
-          fillColor: "#ff7800",
+          fillColor: "#24cbab",
           color: "#000",
           weight: 1,
           fillOpacity: 0.8
